@@ -37,6 +37,7 @@ public class StartLine : MonoBehaviour
 
 		finishLineObject.transform.parent = transform;
 	}
+
 	public void OnTriggerEnter(Collider other)
 	{
 		if (!GameSession.Instance.isRacing)
@@ -44,8 +45,5 @@ public class StartLine : MonoBehaviour
 			return;
 		}
 		GameSession.Instance.LapDone();
-
-
 	}
 }
-

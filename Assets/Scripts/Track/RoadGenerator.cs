@@ -22,7 +22,6 @@ public class RoadGenerator : MonoBehaviour
 	private MeshFilter _roadMeshFilter;
 	private MeshRenderer _roadMeshRenderer;
 
-
 	[SerializeField]
 	private GameObject _roadObject;
 
@@ -103,8 +102,8 @@ public class RoadGenerator : MonoBehaviour
 		_startLineMeshRenderer.material = _startLineMaterial;
 
 		_startLineMeshFilter.mesh = startLineMesh;
-
 	}
+
 	private void GenerateRoadMesh()
 	{
 		Mesh roadMesh = new Mesh();

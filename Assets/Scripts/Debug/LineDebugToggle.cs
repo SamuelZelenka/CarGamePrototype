@@ -9,5 +9,3 @@ public abstract class LineDebugToggle : DebugToggle
 		_lineRenderer.enabled = toggle.isOn;
 	}
 }
-
-

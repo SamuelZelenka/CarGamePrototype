@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
-using UnityEngine;
-
 using UnityEngine;
 
 public class GameSession : MonoBehaviour
@@ -45,7 +41,6 @@ public class GameSession : MonoBehaviour
 		DontDestroyOnLoad(this.gameObject);
 	}
 
-	// Your Start and Update methods go here
 	void Start()
 	{
 		isRacing = false;

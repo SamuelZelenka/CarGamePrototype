@@ -1,4 +1,3 @@
-using System.IO;
 using Unity.Collections;
 using UnityEngine;
 
@@ -151,6 +150,7 @@ public class CarController : MonoBehaviour
 	{
 		_velocity += transform.right * slidingDirection * slidingBrakeAmount;
 	}
+
 	private void ApplyTireRotation(float slidingDirection)
 	{
 		const float MAX_ANGLE = 25;

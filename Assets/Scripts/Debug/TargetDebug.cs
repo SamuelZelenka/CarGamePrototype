@@ -5,4 +5,3 @@
 		_meshRenderer.enabled = toggle.isOn;
 	}
 }
-
