@@ -15,13 +15,13 @@ public class ThrottleButton : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
 	public void OnPointerDown(PointerEventData eventData)
 	{
-		if (!GameSession.Instance.isRacing)
+		if (!GameManager.RaceManager.isRacing)
 		{
-			GameSession.Instance.isRacing = true;
+			GameManager.RaceManager.isRacing = true;
 		}
-		if (!GameSession.Instance.isRaceDone)
+		if (!GameManager.RaceManager.isRaceDone)
 		{
-			var carController = GameSession.Player;
+			var carController = GameManager.PlayerManager.player;
 			carController.AccelerateInput(true);
 			_image.sprite = _pressed;
 		}
@@ -29,7 +29,7 @@ public class ThrottleButton : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
 	public void OnPointerUp(PointerEventData eventData)
 	{
-		var carController = GameSession.Player;
+		var carController = GameManager.PlayerManager.player;
 		carController.AccelerateInput(false);
 		_image.sprite = _unpressed;
 	}
