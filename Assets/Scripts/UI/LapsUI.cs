@@ -8,9 +8,9 @@ public class LapsUI : MonoBehaviour
 
     void Update()
     {
-        var current = GameSession.Instance.CurrentLap;
+        var current = GameManager.RaceManager.CurrentLap;
 
-		var total = GameSession.Instance.TotalLaps;
-        _lapsText.text = $"{current}/{total}";
+		var total = GameManager.RaceManager.TotalLaps;
+        _lapsText.text = $"{current} / {total}";
 	}
 }

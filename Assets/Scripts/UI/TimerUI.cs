@@ -8,7 +8,7 @@ public class TimerUI : MonoBehaviour
 
     void Update()
     {
-		float totalTime = GameSession.Instance.Timer;
+		float totalTime = GameManager.RaceManager.Timer;
 		int minutes = Mathf.FloorToInt(totalTime / 60);
 		int seconds = Mathf.FloorToInt(totalTime % 60);
 		int milliseconds = Mathf.FloorToInt((totalTime * 1000) % 1000); 
