@@ -1,12 +1,10 @@
-using System.Collections;
+
+using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class RoadGenerator : MonoBehaviour
 {
-	[SerializeField]
-	private Path _path; 
-
 	[SerializeField]
 	private float _roadWidth = 2.0f; 
 
@@ -17,107 +15,44 @@ public class RoadGenerator : MonoBehaviour
 	private Material _roadMaterial;
 
 	[SerializeField]
-	private Material _startLineMaterial;
-
 	private MeshFilter _roadMeshFilter;
+
+	[SerializeField]
 	private MeshRenderer _roadMeshRenderer;
 
 	[SerializeField]
-	private GameObject _roadObject;
+	private StartLineMeshGenerator _startLineGenerator;
 
-	[SerializeField]
-	private StartLine _startLine;
-
-	private MeshFilter _startLineMeshFilter;
-	private MeshRenderer _startLineMeshRenderer;
-
-	private void Start()
+	private void Awake()
 	{
-		GetMeshComponents(_roadObject, ref _roadMeshFilter, ref _roadMeshRenderer);
-		GetMeshComponents(_startLine.gameObject, ref _startLineMeshFilter, ref _startLineMeshRenderer);
-		GenerateStartLine();
-		GenerateRoadMesh();
+		GameManager.GameEventManager.OnCurrentTrackChanged += Generate;
+	}
+
+	[Button]
+	public void Generate(int trackId)
+	{
+		var controlPoints = GameManager.TrackManager.ControlPoints;
+		_startLineGenerator.GenerateStartLine(controlPoints, _roadWidth);
+		_roadMeshFilter.mesh = GenerateRoadMesh();
 		_roadMeshRenderer.material = _roadMaterial;
 	}
 
-	private void GetMeshComponents(GameObject meshObject ,ref MeshFilter filter, ref MeshRenderer renderer)
-	{
-		filter = GetComponent<MeshFilter>();
-		if (filter == null)
-			filter = meshObject.AddComponent<MeshFilter>();
-
-		renderer = GetComponent<MeshRenderer>();
-		if (renderer == null)
-			renderer = meshObject.AddComponent<MeshRenderer>();
-	}
-
-	private void GenerateStartLine()
-	{
-		Mesh startLineMesh = new Mesh();
-
-		List<Vector3> vertices = new List<Vector3>();
-		List<int> triangles = new List<int>();
-		List<Vector2> uv = new List<Vector2>();
-
-		Vector3 splinePoint = _path.GetPos(0);
-		Vector3 forward = _path.GetPos(0.01f) - splinePoint;
-		Vector3 right = Quaternion.Euler(0, 90, 0) * forward.normalized;
-
-		Vector3 vertex0 = splinePoint - right * (_roadWidth * 0.5f) + Vector3.up * 0.01f;
-		Vector3 vertex1 = vertex0 + forward * (_roadWidth * 0.5f) + Vector3.up * 0.01f;
-		Vector3 vertex2 = splinePoint + right * (_roadWidth * 0.5f) + Vector3.up * 0.01f;
-		Vector3 vertex3 = vertex2 + forward * (_roadWidth * 0.5f) + Vector3.up * 0.01f;
-
-		Vector2 uvTopLeft = new Vector2(0, 0);
-		Vector2 uvTopRight = new Vector2(0.125f, 0);
-		Vector2 uvBottomLeft = new Vector2(0, 1);
-		Vector2 uvBottomRight = new Vector2(0.125f, 1);
-
-		_startLine.SetStartLine(vertex0, vertex2);
-
-		vertices.Add(vertex0);
-		vertices.Add(vertex1);
-		vertices.Add(vertex2);
-		vertices.Add(vertex3);
-
-		uv.Add(uvTopLeft);
-		uv.Add(uvTopRight);
-		uv.Add(uvBottomLeft);
-		uv.Add(uvBottomRight);
-
-		triangles.Add(0);
-		triangles.Add(1);
-		triangles.Add(2);
-
-		triangles.Add(2);
-		triangles.Add(1);
-		triangles.Add(3);
-
-		startLineMesh.vertices = vertices.ToArray();
-		startLineMesh.triangles = triangles.ToArray();
-		startLineMesh.uv = uv.ToArray();
-
-		startLineMesh.RecalculateNormals();
-
-		_startLineMeshRenderer.material = _startLineMaterial;
-
-		_startLineMeshFilter.mesh = startLineMesh;
-	}
-
-	private void GenerateRoadMesh()
+	private Mesh GenerateRoadMesh()
 	{
 		Mesh roadMesh = new Mesh();
 
 		List<Vector3> vertices = new List<Vector3>();
 		List<int> triangles = new List<int>();
-		List<Vector2> uv = new List<Vector2>(); 
+		List<Vector2> uv = new List<Vector2>();
+
+		var controlPoints = GameManager.TrackManager.ControlPoints;
 
 		for (int i = 0; i <= _subdivisions; i++)
 		{
-			float t = ((float)i / _subdivisions) * _path.controlPoints.Length;
+			float t = ((float)i / _subdivisions) * controlPoints.Count;
 
-			Vector3 splinePoint = _path.GetPos(t);
-			Vector3 forward = _path.GetPos(t + 0.01f) - splinePoint;
+			Vector3 splinePoint = Path.GetPos(t, controlPoints);
+			Vector3 forward = Path.GetPos(t + 0.01f, controlPoints) - splinePoint;
 			Vector3 right = Quaternion.Euler(0, 90, 0) * forward.normalized;
 
 			Vector3 corner1 = splinePoint - right * _roadWidth * 0.5f;
@@ -152,6 +87,6 @@ public class RoadGenerator : MonoBehaviour
 
 		roadMesh.RecalculateNormals();
 
-		_roadMeshFilter.mesh = roadMesh;
+		return roadMesh;
 	}
 }

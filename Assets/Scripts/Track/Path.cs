@@ -1,50 +1,24 @@
 using UnityEngine;
+using System.Collections.Generic;
 
-public class Path : MonoBehaviour
+
+
+public static class Path
 {
-	[SerializeField]
-	public Transform[] controlPoints;
-	public Vector3 GetPos(float t)
+	public static Vector3 GetPos(float t, List<Vector3> controlPoints)
 	{
 		int section = (int)t;
 
-		var p0 = controlPoints[GetClampedPointIndex(section)].position;
-		var p1 = controlPoints[GetClampedPointIndex(section + 1)].position;
-		var p2 = controlPoints[GetClampedPointIndex(section + 2)].position;
-		var p3 = controlPoints[GetClampedPointIndex(section + 3)].position;
+		var p0 = controlPoints[GetClampedPointIndex(section)];
+		var p1 = controlPoints[GetClampedPointIndex(section + 1)];
+		var p2 = controlPoints[GetClampedPointIndex(section + 2)];
+		var p3 = controlPoints[GetClampedPointIndex(section + 3)];
 
-		return GetSplinePoint(p0, p1, p2, p3, t - section);
+		return Spline.GetSplinePoint(p0, p1, p2, p3, t - section);
 	}
 
-	private int GetClampedPointIndex(int point)
+	private static int GetClampedPointIndex(int point)
 	{
-		return point % controlPoints.Length;
+		return point % GameManager.TrackManager.ControlPoints.Count;
 	}
-
-	Vector3 GetSplinePoint(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
-	{
-		float t2 = t * t;
-		float t3 = t2 * t;
-
-		Vector3 interpolatedPoint =
-			0.5f * ((2 * p1) +
-			(-p0 + p2) * t +
-			(2 * p0 - 5 * p1 + 4 * p2 - p3) * t2 +
-			(-p0 + 3 * p1 - 3 * p2 + p3) * t3);
-
-		return interpolatedPoint;
-	}
-
-#if UNITY_EDITOR
-	void OnDrawGizmos()
-	{
-		var prevPos = GetPos(0);
-		for (float i = 0.01f; i < controlPoints.Length; i += 0.1f)
-		{
-			var nextPos = GetPos(i);
-			Gizmos.DrawLine(prevPos, nextPos);
-			prevPos = nextPos;
-		}
-	}
-#endif
 }
