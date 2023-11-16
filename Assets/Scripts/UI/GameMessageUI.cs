@@ -35,4 +35,8 @@ public class GameMessageUI : MonoBehaviour
 	{
 		GameManager.GameEventManager.OnGameMessage += SetErrorText;
 	}
+	private void OnDisable()
+	{
+		GameManager.GameEventManager.OnGameMessage -= SetErrorText;
+	}
 }
