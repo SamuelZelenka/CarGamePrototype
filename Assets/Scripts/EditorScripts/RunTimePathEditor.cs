@@ -62,19 +62,12 @@ public class RunTimePathEditor : MonoBehaviour
                 _roadGenerator.Generate(GameManager.TrackManager.GetCurrentTrackIndex());
             }
 
-            SaveTrack();
+            GameManager.TrackManager.SaveTrack();
 
 			_previousPositions.Clear();
             _previousPositions.AddRange(GameManager.TrackManager.ControlPoints);
         }
     }
-
-
-	public void SaveTrack()
-	{
-		var track = GameManager.TrackManager.GetCurrentTrack();
-		SaveSystem.SaveData(SaveSystem.TRACK_DATA_DIR, track.TrackName, track);
-	}
 
 	private void OnTouch()
     {
@@ -85,7 +78,7 @@ public class RunTimePathEditor : MonoBehaviour
         }
     }
 
-    public void AddControlPoint(Vector3 position)
+    private void AddControlPoint(Vector3 position)
     {
         int closestIndex = 0;
         for (int i = 1; i < _controlPoints.Count; i++)
@@ -107,7 +100,7 @@ public class RunTimePathEditor : MonoBehaviour
         insertIndex = ClampIndex(insertIndex, 0, _controlPoints.Count - 1);
 
         CreateControlPoint(position, insertIndex);
-        SaveTrack();
+		GameManager.TrackManager.SaveTrack();
 
 	}
 
@@ -121,7 +114,7 @@ public class RunTimePathEditor : MonoBehaviour
                 GameManager.TrackManager.ControlPoints.RemoveAt(i);
                 _controlPoints.RemoveAt(i);
                 _roadGenerator.Generate(GameManager.TrackManager.GetCurrentTrackIndex());
-                SaveTrack();
+				GameManager.TrackManager.SaveTrack();
 				return;
             }
         }
