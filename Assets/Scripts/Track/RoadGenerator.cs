@@ -28,7 +28,6 @@ public class RoadGenerator : MonoBehaviour
 		GameManager.GameEventManager.OnCurrentTrackChanged += Generate;
 	}
 
-	[Button]
 	public void Generate(int trackId)
 	{
 		var controlPoints = GameManager.TrackManager.ControlPoints;
