@@ -1,13 +1,20 @@
+using TMPro;
 using UnityEngine;
 
 public class ControlPoint : MonoBehaviour
 {
+	[SerializeField]
+	private TMP_Text indexText;
+
 	private Vector3 offset;
 	private bool isDragging = false;
 
 	RunTimePathEditor _pathEditor;
 	EditorCameraController _cameraController;
-
+	public void SetIndex(int index)
+	{
+		indexText.text = index.ToString();
+	}
 	public void SetCameraController(EditorCameraController cameraController)
 	{
 		_cameraController = cameraController;

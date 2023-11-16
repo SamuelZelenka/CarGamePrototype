@@ -29,11 +29,5 @@ public class TrackData
 	public List<Vector3> ControlPoints => _controlPoints;
 	public int TotalLaps => _totalLaps;
 
-	public void FlipTrackDirection()
-	{
-		_controlPoints.Reverse();
 
-		_controlPoints.OffsetListBackward(3);
-		GameManager.TrackManager.SaveTrack();
-	}
 }

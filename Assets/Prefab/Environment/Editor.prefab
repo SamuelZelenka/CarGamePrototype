@@ -157,6 +157,10 @@ PrefabInstance:
       propertyPath: _pathEditor
       value: 
       objectReference: {fileID: 6789043053125842261}
+    - target: {fileID: 3232020273685635825, guid: 939747208bef24f40ac1e6efb2e79822, type: 3}
+      propertyPath: _runtimeEditor
+      value: 
+      objectReference: {fileID: 6789043053125842261}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 939747208bef24f40ac1e6efb2e79822, type: 3}
 --- !u!224 &4471300820668048203 stripped

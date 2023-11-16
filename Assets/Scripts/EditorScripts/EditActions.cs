@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class EditActions : MonoBehaviour
 {
+	[SerializeField]
+	private RunTimePathEditor _runtimeEditor;
 	public void FlipTrackDirection()
 	{
-		GameManager.TrackManager.GetCurrentTrack().FlipTrackDirection();
+		_runtimeEditor.FlipTrackDirection();
 		GameManager.GameEventManager.OnCurrentTrackChanged?.Invoke(GameManager.TrackManager.GetCurrentTrackIndex());
 	}
 }
