@@ -29,6 +29,12 @@ public class TrackManager : MonoBehaviour
 	public TrackData GetTrack(int index) => _trackList[index];
 	public List<TrackData> GetTracks() => _trackList;
 
+	public void SaveTrack()
+	{
+		var track = GetCurrentTrack();
+		SaveSystem.SaveData(SaveSystem.TRACK_DATA_DIR, track.TrackName, track);
+	}
+
 	public int GetTrackIndex(TrackData trackData)
 	{
 		for (int i = 0; i < _trackList.Count; i++)
